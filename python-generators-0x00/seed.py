@@ -22,11 +22,11 @@ def create_database(connection):
     try:
         connection.autocommit = True
         cursor = connection.cursor()
-        cursor.execute("SELECT 1 FROM pg_database WHERE datname = 'alx_prodev'")
+        cursor.execute("SELECT 1 FROM pg_database WHERE datname = 'ALX_prodev'")
         exists = cursor.fetchone()
         if not exists:
-            cursor.execute("CREATE DATABASE alx_prodev")
-            print("Database alx_prodev created successfully")
+            cursor.execute('CREATE DATABASE "ALX_prodev"')
+            print("Database ALX_prodev created successfully")
         cursor.close()
     except psycopg2.Error as e:
         print(f"Database creation error: {e}")
@@ -35,7 +35,7 @@ def connect_to_prodev(retries=5, delay=2):
     for i in range(retries):
         try:
             connection = psycopg2.connect(
-                dbname='alx_prodev',
+                dbname='ALX_prodev',
                 user='postgres',
                 password='postgres',
                 host='db',
@@ -43,9 +43,9 @@ def connect_to_prodev(retries=5, delay=2):
             )
             return connection
         except psycopg2.Error as e:
-            print(f"Attempt {i+1}: Connection to alx_prodev failed: {e}")
+            print(f"Attempt {i+1}: Connection to ALX_prodev failed: {e}")
             time.sleep(delay)
-    print("Failed to connect to alx_prodev after multiple attempts.")
+    print("Failed to connect to ALX_prodev after multiple attempts.")
     return None
 
 
