@@ -10,7 +10,7 @@ class TestAccessNestedMap(unittest.TestCase):
     """
     Module for unit testing the `access_nested_map` utility function.
     This module contains the `TestAccessNestedMap` test case class, which
-     uses parameterized tests to verify the correct behavior of the 
+     uses parameterized tests to verify the correct behavior of the
      `access_nested_map` function. The tests cover both successful access
        of nested mappings and the correct raising of `KeyError`
          exceptions when keys are missing.

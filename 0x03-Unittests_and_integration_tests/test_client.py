@@ -11,7 +11,7 @@ class TestGithubOrgClient(unittest.TestCase):
     """
     Module for unit testing the GithubOrgClient class.
     This module contains the TestGithubOrgClient test case, which uses unittest
-    and mock to verify the behavior of the GithubOrgClient class. The tests 
+    and mock to verify the behavior of the GithubOrgClient class. The tests
     cover:
     - Fetching organization data from the GitHub API.
     - Retrieving the public repositories URL from the organization data.
