@@ -95,7 +95,8 @@ class TestGithubOrgClient(unittest.TestCase):
     } for org, repos, expected, apache2 in TEST_PAYLOAD
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """Integration tests for GithubOrgClient.public_repos with HTTP calls mocked."""
+    """Integration tests for GithubOrgClient.public_repos with HTTP calls
+      mocked."""
 
     @classmethod
     def setUpClass(cls):
