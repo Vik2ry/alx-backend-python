@@ -19,10 +19,10 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ("a",), "a"),
         ({"a": 1}, ("a", "b"), "b"),
     ])
-    def test_access_nested_map_exception(self, nested_map, path, expected_message):
+    def test_access_nested_map_exception(self, nested_map, path, expected_msg):
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
-        self.assertEqual(str(cm.exception), f"'{expected_message}'")
+        self.assertEqual(str(cm.exception), f"'{expected_msg}'")
 
 
 class TestGetJson(unittest.TestCase):
@@ -52,11 +52,11 @@ class TestMemoize(unittest.TestCase):
             def a_property(self):
                 return self.a_method()
 
-        with patch.object(TestClass, 'a_method', return_value=42) as mock_method:
+        with patch.object(TestClass, 'a_method', return_value=42) as mock_mtd:
             obj = TestClass()
             self.assertEqual(obj.a_property, 42)
             self.assertEqual(obj.a_property, 42)
-            mock_method.assert_called_once()
+            mock_mtd.assert_called_once()
 
 
 if __name__ == '__main__':

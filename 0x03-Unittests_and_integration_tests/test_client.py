@@ -19,13 +19,23 @@ class TestGithubOrgClient(unittest.TestCase):
 
         client = GithubOrgClient(org_name)
         self.assertEqual(client.org, expected)
-        mock_get_json.assert_called_once_with(f"https://api.github.com/orgs/{org_name}")
+        mock_get_json.assert_called_once_with(
+            f"https://api.github.com/orgs/{org_name}"
+        )
 
     def test_public_repos_url(self):
-        with patch('client.GithubOrgClient.org', new_callable=PropertyMock) as mock_org:
-            mock_org.return_value = {"repos_url": "https://api.github.com/orgs/test/repos"}
+        with patch(
+            'client.GithubOrgClient.org',
+            new_callable=PropertyMock
+        ) as mock_org:
+            mock_org.return_value = {
+                "repos_url": "https://api.github.com/orgs/test/repos"
+            }
             client = GithubOrgClient("test")
-            self.assertEqual(client._public_repos_url, "https://api.github.com/orgs/test/repos")
+            self.assertEqual(
+                client._public_repos_url,
+                "https://api.github.com/orgs/test/repos"
+            )
 
     @patch('client.get_json')
     def test_public_repos(self, mock_get_json):
@@ -34,10 +44,16 @@ class TestGithubOrgClient(unittest.TestCase):
             {"name": "repo2", "license": {"key": "apache-2.0"}}
         ]
         mock_get_json.return_value = payload
-        with patch('client.GithubOrgClient._public_repos_url', new_callable=PropertyMock) as mock_url:
+        with patch(
+            'client.GithubOrgClient._public_repos_url',
+            new_callable=PropertyMock
+        ) as mock_url:
             mock_url.return_value = "http://test-url"
             client = GithubOrgClient("test")
-            self.assertEqual(client.public_repos(), ["repo1", "repo2"])
+            self.assertEqual(
+                client.public_repos(),
+                ["repo1", "repo2"]
+            )
             mock_url.assert_called_once()
             mock_get_json.assert_called_once_with("http://test-url")
 
@@ -47,7 +63,10 @@ class TestGithubOrgClient(unittest.TestCase):
         ({}, "mit", False),
     ])
     def test_has_license(self, repo, license_key, expected):
-        self.assertEqual(GithubOrgClient.has_license(repo, license_key), expected)
+        self.assertEqual(
+            GithubOrgClient.has_license(repo, license_key),
+            expected
+        )
 
 
 @parameterized_class([
@@ -58,7 +77,6 @@ class TestGithubOrgClient(unittest.TestCase):
         "apache2_repos": apache2
     } for org, repos, expected, apache2 in TEST_PAYLOAD
 ])
-
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests for GithubOrgClient.public_repos with HTTP calls mocked."""
 
@@ -71,12 +89,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         # Setup .json() return values in order of usage: org -> repos
         cls.mock_get.return_value = MagicMock()
         cls.mock_get.return_value.json.side_effect = [
-    cls.org_payload,
-    cls.repos_payload,
-    cls.org_payload,
-    cls.repos_payload
-]
-
+            cls.org_payload,
+            cls.repos_payload,
+            cls.org_payload,
+            cls.repos_payload
+        ]
 
     @classmethod
     def tearDownClass(cls):
@@ -86,12 +103,18 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def test_public_repos(self):
         """Test public_repos returns expected repo names."""
         client = GithubOrgClient("google")
-        self.assertEqual(client.public_repos(), self.expected_repos)
+        self.assertEqual(
+            client.public_repos(),
+            self.expected_repos
+        )
 
     def test_public_repos_with_license(self):
         """Test public_repos returns filtered repos by license."""
         client = GithubOrgClient("google")
-        self.assertEqual(client.public_repos(license="apache-2.0"), self.apache2_repos)
+        self.assertEqual(
+            client.public_repos(license="apache-2.0"),
+            self.apache2_repos
+        )
 
 if __name__ == '__main__':
     unittest.main()
