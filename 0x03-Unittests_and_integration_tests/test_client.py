@@ -8,6 +8,22 @@ from client import GithubOrgClient
 
 
 class TestGithubOrgClient(unittest.TestCase):
+    """
+    Module for unit testing the GithubOrgClient class.
+    This module contains the TestGithubOrgClient test case, which uses unittest and mock
+    to verify the behavior of the GithubOrgClient class. The tests cover:
+    - Fetching organization data from the GitHub API.
+    - Retrieving the public repositories URL from the organization data.
+    - Listing public repositories and verifying their names.
+    - Checking if a repository has a specific license.
+    Tested methods include:
+    - org property: Ensures correct API call and data retrieval.
+    - _public_repos_url property: Ensures correct extraction of repos_url.
+    - public_repos method: Ensures correct listing of repository names.
+    - has_license static method: Ensures correct license key checking.
+    Mocks are used to isolate external dependencies and API calls.
+    """
+
     @parameterized.expand([
         ("google",),
         ("abc",),
@@ -115,6 +131,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             client.public_repos(license="apache-2.0"),
             self.apache2_repos
         )
+
 
 if __name__ == '__main__':
     unittest.main()

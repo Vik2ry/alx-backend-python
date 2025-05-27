@@ -7,6 +7,15 @@ from unittest.mock import Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
+    """
+    Module for unit testing the `access_nested_map` utility function.
+    This module contains the `TestAccessNestedMap` test case class, which uses
+    parameterized tests to verify the correct behavior of the `access_nested_map`
+    function. The tests cover both successful access of nested mappings and
+    the correct raising of `KeyError` exceptions when keys are missing.
+    Classes:
+        TestAccessNestedMap: Contains unit tests for the `access_nested_map` function.
+    """
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
