@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "adbe1495-88eb-4c2a-b26a-b68446931a12",
+		"name": "Messaging app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31417183"
+	},
+	"item": [
+		{
+			"name": "create conversation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5MjAzNjAxLCJpYXQiOjE3NDkyMDE4MDEsImp0aSI6IjU0OTU1NWYyODk2MzRlMWZiNDBlZDVkZmE4ZTAwMzdlIiwidXNlcl9pZCI6ImRhMzg1ZjMyLTg4OTktNDE1OC05NGJkLTI4N2FkM2Y0ZjQwNCJ9.JUEKcY13eUDr_67Q6qf98iE4-RG3-DzOdtQNl54K94M",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/conversations/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"conversations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get conversation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5MjAzNjAxLCJpYXQiOjE3NDkyMDE4MDEsImp0aSI6IjU0OTU1NWYyODk2MzRlMWZiNDBlZDVkZmE4ZTAwMzdlIiwidXNlcl9pZCI6ImRhMzg1ZjMyLTg4OTktNDE1OC05NGJkLTI4N2FkM2Y0ZjQwNCJ9.JUEKcY13eUDr_67Q6qf98iE4-RG3-DzOdtQNl54K94M",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/conversations/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"conversations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create messages",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5MjAzNjAxLCJpYXQiOjE3NDkyMDE4MDEsImp0aSI6IjU0OTU1NWYyODk2MzRlMWZiNDBlZDVkZmE4ZTAwMzdlIiwidXNlcl9pZCI6ImRhMzg1ZjMyLTg4OTktNDE1OC05NGJkLTI4N2FkM2Y0ZjQwNCJ9.JUEKcY13eUDr_67Q6qf98iE4-RG3-DzOdtQNl54K94M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message_body",
+							"value": "how are you ",
+							"type": "text"
+						},
+						{
+							"key": "conversation",
+							"value": "8e7743c5-372b-4ff9-806d-ffc4bae305e9",
+							"type": "text"
+						},
+						{
+							"key": "sender",
+							"value": "da385f32-8899-4158-94bd-287ad3f4f404",
+							"type": "text"
+						},
+						{
+							"key": "receiver",
+							"value": "da385f32-8899-4158-94bd-287ad3f4f404",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/message/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"message",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
