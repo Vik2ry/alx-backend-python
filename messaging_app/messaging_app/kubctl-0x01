@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+DEPLOYMENT_NAME=messaging-app
+NAMESPACE=default
+REPLICAS=3
+SERVICE_PORT=8000
+
+echo "Scaling deployment '$DEPLOYMENT_NAME' to $REPLICAS replicas..."
+kubectl scale deployment "$DEPLOYMENT_NAME" --replicas=$REPLICAS -n $NAMESPACE
+
+echo "Waiting for pods to be ready..."
+kubectl rollout status deployment/"$DEPLOYMENT_NAME" -n $NAMESPACE
+
+echo "Listing pods:"
+kubectl get pods -n $NAMESPACE -l app=$DEPLOYMENT_NAME
+
+echo "Starting port-forward to access the service locally on port $SERVICE_PORT..."
+kubectl port-forward svc/$DEPLOYMENT_NAME-service $SERVICE_PORT:8000 -n $NAMESPACE &
+
+PORT_FORWARD_PID=$!
+sleep 5  # wait a bit for port-forward to establish
+
+echo "Running load test with wrk for 30 seconds..."
+wrk -t2 -c50 -d30s http://localhost:$SERVICE_PORT/
+
+echo "Stopping port-forward..."
+kill $PORT_FORWARD_PID
+
+echo "Resource usage of pods:"
+kubectl top pods -n $NAMESPACE -l app=$DEPLOYMENT_NAME

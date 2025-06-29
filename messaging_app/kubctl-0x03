@@ -1,0 +1,44 @@
+#!/bin/bash
+set -e
+
+DEPLOYMENT=messaging-app-blue
+NAMESPACE=default
+SERVICE_PORT=8000
+URL="http://localhost:$SERVICE_PORT/"
+
+echo "Applying updated deployment with image version 2.0..."
+kubectl apply -f blue_deployment.yaml
+
+echo "Waiting for rolling update to complete..."
+kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE &
+
+ROLLING_PID=$!
+
+# Port-forward service in background
+kubectl port-forward svc/messaging-app-service $SERVICE_PORT:$SERVICE_PORT -n $NAMESPACE > /dev/null 2>&1 &
+PF_PID=$!
+
+# Function to check app availability with curl in loop
+echo "Testing app availability with continuous curl requests..."
+SECONDS=0
+while kill -0 $ROLLING_PID 2>/dev/null; do
+  HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" $URL || echo "000")
+  if [[ "$HTTP_STATUS" != "200" ]]; then
+    echo "Warning: Got HTTP status $HTTP_STATUS"
+  else
+    echo "App is up (HTTP $HTTP_STATUS)"
+  fi
+  sleep 2
+done
+
+wait $ROLLING_PID
+
+echo "Rolling update finished."
+
+echo "Checking current pods for deployment $DEPLOYMENT:"
+kubectl get pods -l app=messaging-app,version=blue -n $NAMESPACE
+
+echo "Stopping port-forward..."
+kill $PF_PID
+
+echo "Done."
