@@ -1,10 +1,19 @@
 pipeline {
     agent any
 
+    environment {
+        GITHUB_CREDENTIALS = credentials('github-creds') // stored in Jenkins credentials
+    }
+
+    tools {
+        // Optional: use Jenkins-installed Python
+        python 'Python 3'
+    }
+
     stages {
-        stage('Clone') {
+        stage('Clone Repository') {
             steps {
-                git credentialsId: 'github-creds', url: 'https://github.com/vik2ry/alx-backend-python.git'
+                git credentialsId: "${GITHUB_CREDENTIALS}", url: 'https://github.com/vik2ry/alx-backend-python.git'
             }
         }
 
@@ -14,14 +23,7 @@ pipeline {
             }
         }
 
-        stage('Run Django Tests') {
-            steps {
-                dir('messaging_app') {
-                    sh 'python manage.py test'
-                }
-            }
-        }
-                stage('Run Django Tests') {
+        stage('Run Tests') {
             steps {
                 dir('messaging_app') {
                     sh 'pytest --ds=messaging_app.settings --junitxml=report.xml'
@@ -29,11 +31,37 @@ pipeline {
             }
         }
 
-        stage('Publish Report') {
+        stage('Publish Test Results') {
             steps {
                 junit 'messaging_app/report.xml'
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build('vik2ry/messaging_app')
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry([credentialsId: 'dockerhub-creds', url: '']) {
+                    script {
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline complete.'
+        }
+        failure {
+            echo 'Build failed.'
+        }
     }
 }
